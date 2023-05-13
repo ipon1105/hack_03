@@ -10,5 +10,6 @@ class Result {
         this.connectionTime = null; // Время соединения
     }
 
-    
 }
+
+module.exports.Result = Result;

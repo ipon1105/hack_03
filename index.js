@@ -1,33 +1,57 @@
+(async () => {
+
+// Подключаем другие файлы
+var Result = require("./result.js").Result;
+var httpRequest = require("./httpRequest.js").httpRequest;
+
 // Входные данные программы (сайты)
-var input = [];
+var input = [
+    {
+        host: "www.google.com",
+        port: 80,
+        path: "/"
+    },
+    {
+        host: "vk.com",
+        port: 80,
+        path: "/"
+    },
+];
 
-// Результат выполнения программы
-var result = {
-    'titleTime':        undefined,   // Время появления заголовка в браузере
-    'renderTime':       undefined,   // Время появления контента в браузере
-    'interactivTime':   undefined,   // Время до интерактивности
-    'firstByte':        undefined,   // Время первого байта
-    'lastByte':         undefined,   // Время последнего байта
-    'countByte':        undefined,   // Общее количество байта
-    'DNSTime':          undefined,   // Время поиска DNS
-    'connectionTime':   undefined,   // Врмя соединения
-};
+// Выходные данные программы (сайты)
+var output = [];
 
-var util = require("util"),
-    http = require("http");
-// var options = {
-//     host: "www.google.com",
-//     port: 80,
-//     path: "/"
-// };
-// var content = "";
-// var req = http.request(options, function(res) {
-//     res.setEncoding("utf8");
-//     res.on("data", function (chunk) {
-//         content += chunk;
-//     });
-//     res.on("end", function () {
-//         console.log(content);
-//     });
-// });
-// req.end();
+
+// Скачиваем сайт
+async function run(config){
+    // Результат выполнения программы
+    var result = new Result();
+
+    var content = "";
+
+    // var startTime = performance.now()
+    var req = await httpRequest(config, function(res) {
+
+        res.setEncoding("utf8");
+        res.on("data", function (chunk) {
+            content += chunk;
+        });
+        res.on("end", function () {
+            result.countByte = content.length;
+        });
+    });
+    // req.end();
+    
+    return result;
+}
+
+// Перебор входных данных
+for (let elem of input) {
+    output.push(await run(elem));
+}
+
+// Вывод результата
+console.log(output)
+console.log(1);
+
+})()
