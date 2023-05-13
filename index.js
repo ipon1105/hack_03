@@ -1,3 +1,7 @@
+// Входные данные программы (сайты)
+var input = [];
+
+// Результат выполнения программы
 var result = {
     'titleTime':        undefined,   // Время появления заголовка в браузере
     'renderTime':       undefined,   // Время появления контента в браузере
@@ -9,8 +13,8 @@ var result = {
     'connectionTime':   undefined,   // Врмя соединения
 };
 
-// var util = require("util"),
-//     http = require("http");
+var util = require("util"),
+    http = require("http");
 // var options = {
 //     host: "www.google.com",
 //     port: 80,
